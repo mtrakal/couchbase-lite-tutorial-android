@@ -3,10 +3,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.1+'
+        classpath 'com.android.tools.build:gradle:2.1.3'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
-apply plugin: 'android'
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 
 repositories {
     mavenCentral()
@@ -17,12 +19,16 @@ repositories {
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 19
+        versionCode 1
+        versionName "1"
+
+        multiDexEnabled true
+        minSdkVersion 16
+        targetSdkVersion 24
     }
 
     // workaround for "duplicate files during packaging of APK" issue
@@ -35,7 +41,7 @@ android {
 
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
         }
     }
@@ -47,9 +53,16 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.0.0'
+    compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.android.support:multidex:1.0.1'
 
-    // By default, this depends on couchbase lite via the maven artifact
-    compile 'com.couchbase.lite:couchbase-lite-android:0.0.0-451'
+    compile 'com.jakewharton:butterknife:8.3.0'
+    apt 'com.jakewharton:butterknife-compiler:8.3.0'
+
+    compile 'com.couchbase.lite:couchbase-lite-android:1.2.1'
+    compile 'com.couchbase.lite:couchbase-lite-android-forestdb:1.2.1'
+
+//    compile 'com.couchbase.lite:couchbase-lite-android:1.3.1-21'
+//    compile 'com.couchbase.lite:couchbase-lite-android-forestdb:1.3.1-21'
 
 }
